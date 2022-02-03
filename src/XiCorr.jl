@@ -6,8 +6,8 @@ function xicorr(X, Y)
     n = length(X)
     Y = Y[sortperm(X)]  # how should offset arrays be handled?
     sorter = sortperm(Y)
-    R = zeros(Int, n)
-    L = zeros(Int, n)
+    R = zeros(Int, n)  # R[i] is the number of j such that Y[j] ≤ Y[i]
+    L = zeros(Int, n)  # L[i] is the number of j such that Y[j] ≥ Y[i]
 
     i = 1
     while i <= n
@@ -19,7 +19,7 @@ function xicorr(X, Y)
             i += 1
         end
         i -= 1
-        for j = i-counter+1:i
+        for j = i-counter+1:i  # fill in R and L values wherever Y == curr
             R[sorter[j]] = i
             L[sorter[j]] = (n-i) + counter
         end
