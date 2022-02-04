@@ -1,12 +1,46 @@
-using Random
-
 module XiCor
 
-function xicor(X, Y, break_ties_randomly=false)
+using Random
+
+"""
+    xicor(X, Y[, break_ties_randomly=false[, tie_breaking_rng=nothing]])
+
+Computes the correlation ξ between X and Y.
+
+Unlike most coefficients of correlation, ξ ranges from -0.5 to 1.
+
+If there are duplicate values in X, then ties are
+broken based on the order in which they are observed.
+If the order of X is not random, then you should
+set `break_ties_randomly` to `true` to avoid a biased
+estimate. You can use `tie_breaking_rng` to
+deterministically break ties.
+
+See _A new coefficient of correlation_ by Chatterjee.
+
+[arXiv:1909.10140 [math.ST]](https://arxiv.org/abs/1909.10140)
+
+# Examples
+```julia-repl
+julia> ξ = xicor(1:100, 1:100)
+0.9702970297029703
+julia> x = trunc.((1:100) ./ 10);  # create x with lots of duplicates
+julia> y = rand(MersenneTwister(0), 100);
+julia> ξ = xicor(x, y, true, MersenneTwister(0))
+-0.01830183018301823
+julia> ξ = xicor(x, y, true, MersenneTwister(42))
+0.004500450045004545
+```
+"""
+function xicor(X, Y, break_ties_randomly=false, tie_breaking_rng=nothing)
     if break_ties_randomly
-        index = randperm(length(x))
-        x = x[index]
-        y = y[index]
+        if !isnothing(tie_breaking_rng)
+            index = Random.randperm(tie_breaking_rng, length(X))
+        else
+            index = Random.randperm(length(X))
+        end
+        X = X[index]
+        Y = Y[index]
     end
     n = length(X)
     Y = Y[sortperm(X)]  # how should offset arrays be handled?
