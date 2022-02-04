@@ -1,8 +1,13 @@
 using Random
 
-module XiCorr
+module XiCor
 
-function xicorr(X, Y)
+function xicor(X, Y, break_ties_randomly=false)
+    if break_ties_randomly
+        index = randperm(length(x))
+        x = x[index]
+        y = y[index]
+    end
     n = length(X)
     Y = Y[sortperm(X)]  # how should offset arrays be handled?
     sorter = sortperm(Y)
@@ -27,15 +32,6 @@ function xicorr(X, Y)
     end
 
     1 - n * sum(abs.(diff(R))) / (2 * sum(L .* (n .- L)))
-end
-
-function xicorr(x, y, break_ties_randomly=false)
-    if break_ties_randomly
-        index = randperm(length(x))
-        x = x[index]
-        y = y[index]
-    end
-    xicorr(x, y)
 end
 
 end # module
