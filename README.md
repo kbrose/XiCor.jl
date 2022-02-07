@@ -2,7 +2,7 @@ A Julia implementation of Sourav Chatterjee's [new coefficient of correlation](h
 
 Does not support p value calculation.
 
-```julia-repl
+```julia
 julia> x = rand(1_000);
 
 julia> y = sin.(x * 8π) + randn(1_000) / 2;
