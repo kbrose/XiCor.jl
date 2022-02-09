@@ -10,3 +10,5 @@ julia> y = sin.(x * 8π) + randn(1_000) / 2;
 julia> xicor(x, y)
 0.4528054528054528
 ```
+
+![Run tests](https://github.com/kbrose/XiCor.jl/actions/workflows/test.yml/badge.svg)
