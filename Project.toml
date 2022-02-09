@@ -2,3 +2,6 @@ name = "XiCor"
 uuid = "4645789d-b268-4169-abb1-089a6b6dc724"
 authors = ["Kevin Rose <kevin+gh@maypark.com>"]
 version = "0.1.0"
+
+[deps]
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"

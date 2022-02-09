@@ -2,8 +2,10 @@ module XiCor
 
 using Random
 
+export xicor
+
 """
-    xicor(X, Y[, break_ties_randomly=false[, tie_breaking_rng=nothing]])
+    xicor(X, Y[, break_ties_randomly=false[, rng=nothing]])
 
 Computes the correlation ξ between X and Y.
 
@@ -13,7 +15,7 @@ If there are duplicate values in X, then ties are
 broken based on the order in which they are observed.
 If the order of X is not random, then you should
 set `break_ties_randomly` to `true` to avoid a biased
-estimate. You can use `tie_breaking_rng` to
+estimate. You can use the `rng` parameter to
 deterministically break ties.
 
 See _A new coefficient of correlation_ by Chatterjee.
@@ -32,12 +34,12 @@ julia> ξ = xicor(x, y, true, MersenneTwister(42))
 0.004500450045004545
 ```
 """
-function xicor(X, Y, break_ties_randomly=false, tie_breaking_rng=nothing)
+function xicor(X, Y, break_ties_randomly=false, rng=nothing)
     if break_ties_randomly
-        if !isnothing(tie_breaking_rng)
-            index = Random.randperm(tie_breaking_rng, length(X))
+        if !isnothing(rng)
+            index = randperm(rng, length(X))
         else
-            index = Random.randperm(length(X))
+            index = randperm(length(X))
         end
         X = X[index]
         Y = Y[index]
